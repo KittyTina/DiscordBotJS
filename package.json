@@ -4,5 +4,9 @@
   "description": "DiscordBotJS",
   "author": {
     "name": ""
+  },
+  "dependencies": {
+    "discord.js": "^14.7.1",
+    "request": "^2.88.2"
   }
 }
