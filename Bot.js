@@ -3,7 +3,7 @@ const request = require('request')
 const config = require("./stuff/config.json");
 const client = new Discord.Client();
 const color_purple = "#644099";
-const error_color = "#644099"
+const error_color = "#8B0000"
 
 client.login(config.token);
 
