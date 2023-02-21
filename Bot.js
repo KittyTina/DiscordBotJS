@@ -1,10 +1,11 @@
 import Discord from "discord.js"
 import request from "request";
-const config = require("./stuff/config.json");
+import config from './stuff/config.json' assert { type: 'json' };
 import fetch from "node-fetch";
-const client = new Discord.Client();
 const color_purple = "#644099";
 const error_color = "#8B0000";
+
+const client = new Discord.Client();
 
 client.login(config.token);
 
