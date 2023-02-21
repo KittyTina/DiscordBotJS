@@ -4,7 +4,7 @@ import config from './stuff/config.json' assert { type: 'json' };
 import fetch from "node-fetch";
 const color_purple = "#644099";
 const error_color = "#8B0000";
-const client = new Discord.Client({intents: [GatewayIntentBits.Guilds]});
+const client = new Discord.Client({intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages]});
 //const client = new Discord.Client();
 
 client.on("ready", () => {
@@ -32,7 +32,7 @@ client.on("message", async (message) => {
   if (message.content.startsWith("!stock")) {
     const symbol = message.content.split(" ")[1]; // to get the second element, which displays the symbol :)
     if (!symbol) {
-      message.channel.send(
+      await message.channel.send(
         "Provide a proper sybmol, if you don't know what you are looking for 0_0"
       );
       return;
@@ -52,7 +52,7 @@ client.on("message", async (message) => {
           { name: "Last updated", value: data.lastUpdated }
         )
         .setTimestamp();
-      message.channel.send(embed);
+      await message.channel.send(embed);
     } catch (error) {
       const embed = new Discord.MessageEmbed()
         .setTitle("Error!")
@@ -106,7 +106,7 @@ const getStockDataFromAlphavantage = (symbol)=> {
 
 
 try{
-  client.login(config.token);
+  await client.login(config.token);
 }catch(error){
-  console.error(error.message)
+  console.error("Error logging in: ", error.message)
 }
