@@ -1,19 +1,18 @@
-import Discord from "discord.js"
+import Discord, { GatewayIntentBits } from "discord.js"
 import request from "request";
 import config from './stuff/config.json' assert { type: 'json' };
 import fetch from "node-fetch";
 const color_purple = "#644099";
 const error_color = "#8B0000";
-
-const client = new Discord.Client();
-
-client.login(config.token);
+const client = new Discord.Client({intents: [GatewayIntentBits.Guilds]});
+//const client = new Discord.Client();
 
 client.on("ready", () => {
   console.log(`Logged in as ${client.user.tag}!`);
 });
 
 client.on("message", (msg) => {
+  console.log(`Message received: ${msg.content}`)
   if (msg.content === "!ping") {
     msg.reply("Ready to serve!");
   }
@@ -21,7 +20,7 @@ client.on("message", (msg) => {
 
 client.on("guildMemberAdd", (member) => {
   const embed = new Discord.MessageEmbed()
-    .setTitle("Welcome, ${member.user.username}")
+    .setTitle(`Welcome, ${member.user.username}`)
     .setDescription("Welcome on the test server!")
     .setColor(color_purple);
   member.guild.channels.cache
@@ -42,7 +41,7 @@ client.on("message", async (message) => {
       const data = await getStockDataFromAlphavantage(symbol);
       const embed = new Discord.MessageEmbed()
         .setColor(color_purple)
-        .setTitle("Stock price for ${data.symbol}")
+        .setTitle(`Stock price for ${data.symbol}`)
         .addFields(
           { name: "Price", value: `$${data.price}`, inline: true },
           {
@@ -103,4 +102,11 @@ const getStockDataFromAlphavantage = (symbol)=> {
       }
     });
   });
+}
+
+
+try{
+  client.login(config.token);
+}catch(error){
+  console.error(error.message)
 }
