@@ -5,7 +5,6 @@ import fetch from "node-fetch";
 const color_purple = "#644099";
 const error_color = "#8B0000";
 const client = new Discord.Client({intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages]});
-//const client = new Discord.Client();
 
 client.on("ready", () => {
   console.log(`Logged in as ${client.user.tag}!`);
