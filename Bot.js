@@ -30,7 +30,7 @@ client.on("guildMemberAdd", (member) => {
 
 client.on("message", async (message) => {
   if (message.content.startsWith("!stock")) {
-    const symbol = message.conent.split(" ")[1]; // to get the second element, which displays the symbol :)
+    const symbol = message.content.split(" ")[1]; // to get the second element, which displays the symbol :)
     if (!symbol) {
       message.channel.send(
         "Provide a proper sybmol, if you don't know what you are looking for 0_0"
@@ -58,7 +58,7 @@ client.on("message", async (message) => {
         .setTitle("Error!")
         .setDescription(error.message)
         .setColor(error_color);
-      message.channel.send(error.embed);
+      message.channel.send(embed);
     }
   }
 });
