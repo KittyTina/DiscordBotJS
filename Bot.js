@@ -1,17 +1,19 @@
-import Discord, { GatewayIntentBits } from "discord.js"
+import Discord, { GatewayIntentBits } from "discord.js";
 import request from "request";
-import config from './stuff/config.json' assert { type: 'json' };
+import config from "./stuff/config.json" assert { type: "json" };
 import fetch from "node-fetch";
 const color_purple = "#644099";
 const error_color = "#8B0000";
-const client = new Discord.Client({intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages]});
+const client = new Discord.Client({
+  intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages],
+});
 
 client.on("ready", () => {
   console.log(`Logged in as ${client.user.tag}!`);
 });
 
 client.on("message", (msg) => {
-  console.log(`Message received: ${msg.content}`)
+  console.log(`Message received: ${msg.content}`);
   if (msg.content === "!ping") {
     msg.reply("Ready to serve!");
   }
@@ -32,7 +34,7 @@ client.on("message", async (message) => {
     const symbol = message.content.split(" ")[1]; // to get the second element, which displays the symbol :)
     if (!symbol) {
       await message.channel.send(
-        "Provide a proper sybmol, if you don't know what you are looking for 0_0"
+        "Provide a proper symbol, if you don't know what you are looking for 0_0"
       );
       return;
     }
@@ -70,7 +72,7 @@ client.on("message", (msg) => {
   }
 });
 
-const getQuote = ()=> {
+const getQuote = () => {
   return fetch("https://zenquotes.io/api/random")
     .then((res) => {
       return res.json();
@@ -78,9 +80,9 @@ const getQuote = ()=> {
     .then((data) => {
       return data[0]["q"] + " -" + data[0]["a"];
     });
-}
+};
 
-const getStockDataFromAlphavantage = (symbol)=> {
+const getStockDataFromAlphavantage = (symbol) => {
   const apiKey = config.alphavantage_api_key;
   const url = `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${symbol}&apikey=${apiKey}`;
   return new Promise((resolve, reject) => {
@@ -101,11 +103,10 @@ const getStockDataFromAlphavantage = (symbol)=> {
       }
     });
   });
-}
+};
 
-
-try{
+try {
   await client.login(config.token);
-}catch(error){
-  console.error("Error logging in: ", error.message)
+} catch (error) {
+  console.error("Error logging in: ", error.message);
 }
