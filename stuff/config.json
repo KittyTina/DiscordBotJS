@@ -1,4 +1,4 @@
 {
-    token: "token goes here",
-    alphavantage_api_key: "key"
+    "token": "token goes here",
+    "alphavantage_api_key": "key"
 }
