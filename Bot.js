@@ -1,7 +1,7 @@
-const Discord = require("discord.js");
-const request = require("request");
+import Discord from "discord.js"
+import request from "request";
 const config = require("./stuff/config.json");
-const fetch = require("node-fetch");
+import fetch from "node-fetch";
 const client = new Discord.Client();
 const color_purple = "#644099";
 const error_color = "#8B0000";
@@ -71,7 +71,7 @@ client.on("message", (msg) => {
   }
 });
 
-function getQuote() {
+const getQuote = ()=> {
   return fetch("https://zenquotes.io/api/random")
     .then((res) => {
       return res.json();
@@ -81,7 +81,7 @@ function getQuote() {
     });
 }
 
-function getStockDataFromAlphavantage(symbol) {
+const getStockDataFromAlphavantage = (symbol)=> {
   const apiKey = config.alphavantage_api_key;
   const url = `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${symbol}&apikey=${apiKey}`;
   return new Promise((resolve, reject) => {

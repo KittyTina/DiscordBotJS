@@ -351,3 +351,4 @@ MigrationBackup/
 
 #config.json file
 config.*
+stuff/config.json
