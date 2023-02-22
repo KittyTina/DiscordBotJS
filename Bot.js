@@ -1,4 +1,4 @@
-import Discord, { GatewayIntentBits } from "discord.js";
+import Discord, { GatewayIntentBits, REST, Routes } from "discord.js";
 import request from "request";
 import config from "./stuff/config.json" assert { type: "json" };
 import fetch from "node-fetch";
@@ -12,9 +12,39 @@ client.on("ready", () => {
   console.log(`Logged in as ${client.user.tag}!`);
 });
 
+const commands = [
+  {
+    name: 'ping',
+    description: 'Replies with Pong!',
+  },
+  {
+    name: 'stock',
+    description: 'Replies with the stock for the chosen symbol'
+  },
+  {
+    name: 'inspire',
+    description: 'Gets whise words'
+  },
+  // more commands here
+];
+
+const rest = new REST({version: '10'}).setToken(config.token)
+
+(async () => {
+  try {
+    console.log('Started refreshing application (/) commands.');
+
+    await rest.put(Routes.applicationCommands(CLIENT_ID), { body: commands });
+
+    console.log('Successfully reloaded application (/) commands.');
+  } catch (error) {
+    console.error(error);
+  }
+})();
+
 client.on("message", (msg) => {
   console.log(`Message received: ${msg.content}`);
-  if (msg.content === "!ping") {
+  if (msg.content === "/ping") {
     msg.reply("Ready to serve!");
   }
 });
@@ -30,7 +60,7 @@ client.on("guildMemberAdd", (member) => {
 });
 
 client.on("message", async (message) => {
-  if (message.content.startsWith("!stock")) {
+  if (message.content.startsWith("/stock")) {
     const symbol = message.content.split(" ")[1]; // to get the second element, which displays the symbol :)
     if (!symbol) {
       await message.channel.send(
@@ -67,7 +97,7 @@ client.on("message", async (message) => {
 client.on("message", (msg) => {
   if (msg.author.bot) return;
 
-  if (msg.content === "$inspire") {
+  if (msg.content === "/inspire") {
     getQuote().then((quote) => msg.channel.send(quote));
   }
 });
