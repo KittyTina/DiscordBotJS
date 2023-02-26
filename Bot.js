@@ -4,6 +4,7 @@ import config from "./stuff/config.json" assert { type: "json" };
 import fetch from "node-fetch";
 const color_purple = "#644099";
 const error_color = "#8B0000";
+const CLIENT_ID = "your_client_id_here";
 const client = new Discord.Client({
   intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages],
 });
@@ -14,33 +15,30 @@ client.on("ready", () => {
 
 const commands = [
   {
-    name: 'ping',
-    description: 'Replies with Pong!',
+    name: "ping",
+    description: "Replies with Pong!",
   },
   {
-    name: 'stock',
-    description: 'Replies with the stock for the chosen symbol'
+    name: "stock",
+    description: "Replies with the stock for the chosen symbol",
   },
   {
-    name: 'inspire',
-    description: 'Gets whise words'
+    name: "inspire",
+    description: "Gets whise words",
   },
   // more commands here
 ];
 
-const rest = new REST({version: '10'}).setToken(config.token)
+const rest = new REST({ version: "10" }).setToken(config.token);
+try {
+  console.log("Started refreshing application (/) commands.");
 
-(async () => {
-  try {
-    console.log('Started refreshing application (/) commands.');
+  await rest.put(Routes.applicationCommands(CLIENT_ID), { body: commands });
 
-    await rest.put(Routes.applicationCommands(CLIENT_ID), { body: commands });
-
-    console.log('Successfully reloaded application (/) commands.');
-  } catch (error) {
-    console.error(error);
-  }
-})();
+  console.log("Successfully reloaded application (/) commands.");
+} catch (error) {
+  console.error(error);
+}
 
 client.on("message", (msg) => {
   console.log(`Message received: ${msg.content}`);
@@ -95,9 +93,7 @@ client.on("message", async (message) => {
 });
 
 client.on("message", (msg) => {
-  if (msg.author.bot) return;
-
-  if (msg.content === "/inspire") {
+  if (msg.author != client.user && msg.content === "/inspire") {
     getQuote().then((quote) => msg.channel.send(quote));
   }
 });
